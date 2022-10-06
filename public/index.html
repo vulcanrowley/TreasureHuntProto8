@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Treasure Hunt Proto 6</title>
+
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/game.css">
+    
+   <!-- <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script> -->
+</head>
+
+<body>
+    <center><h1 style="font-size:48px;">Treasure Hunt</h1></center>
+    <br>
+       <!--<div id="debug"></div>--> 
+        <div id="game-container">
+            <div id="game-list">
+                <table id="game-list-table">
+                    <tr>
+                        <th>Game ID</th>
+                        <th>Players</th>
+                        <th>Join Game</th>
+                    </tr>
+                </table>
+            </div>
+            <div id="game-list-options">
+                <p> Select number of players in your new game</p>
+                <button id="btn-new-game">Create new game</button>
+                <select id="playerSelect">
+                    <option value="" selected disabled hidden>Number of players</option>
+                    <option value="1" selected>One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                    <option value="4">Four</option>
+                    <option value="5">Five</option>
+                  </select>
+            </div>
+        </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <!--  <script src="/bower_components/jquery/dist/jquery.min.js"></script>-->
+    <script src="/dist/dungeon.min.js"></script>
+    <!--<script src="//cdn.jsdelivr.net/npm/@mikewesthad/dungeon@1.2.2"></script>-->
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+
+    
+    <script src="/js/main.js" type="module"></script>
+</body>
+
+</html>
+        
+
