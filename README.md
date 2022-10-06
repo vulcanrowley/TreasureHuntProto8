@@ -1,4 +1,4 @@
-Treasure Hunt base
+Treasure Hunt base - reverted from tween experiment
 first complete express, socketio, phaser and procedurally-generated Dungeon with imports that can send
 a random number to the master html file and get the same dungeon generated on each additional client.
 
