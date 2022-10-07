@@ -243,6 +243,19 @@ export default class DungeonScene extends Phaser.Scene {
       //bounceY: 1.
     });
 
+      // Added for click recognition
+      
+      this.input.on('pointerdown', function (pointer) {
+        let gameX = Math.floor(pointer.worldX);// not Tile loc
+        let gameY = Math.floor(pointer.worldY);
+
+        self.player.goal.x = gameX;
+        self.player.goal.y = gameY;
+
+        console.log(`click at ${gameX}, ${gameY}`)
+
+      }, this);
+
 
     //!!!!!!!!!!!! SocketIO Setup
     // Drived From https://github.com/ivangfr/socketio-express-phaser3
