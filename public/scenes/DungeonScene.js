@@ -35,7 +35,7 @@ export default class DungeonScene extends Phaser.Scene {
       this.gameKey = data.seed; // game room is the same as the sceneSeed
       this.playerID = data.playerID;
       this.socket = data.socket;
-
+      this.gameSize = data.gameSize;
 };
       
 
@@ -61,14 +61,14 @@ export default class DungeonScene extends Phaser.Scene {
 
     // MAX of 20 players per game
     this.opponentCnt = -1;
-    
+
       // Generate a random world based on sceneSeed with a few extra options:
       //  - Rooms should only have odd number dimensions so that they have a center tile.
       //  - Doors should be at least 2 tiles away from corners, so that we can place a corner tile on
       //    either side of the door location
       this.dungeon = new Dungeon({
-      width: 200,
-      height:200,
+      width: this.gameSize,
+      height:this.gameSize,
       doorPadding: 2,
       randomSeed: this.sceneSeed,//this.level,
       rooms: {

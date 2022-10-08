@@ -2,6 +2,8 @@ import LobbyScene from "../scenes/LobbyScene.js"
 import DungeonScene from "../scenes/DungeonScene.js"
 
 const socket = io();
+
+var cells = {}; // local storage for room numPlayers
 (function (socket) {// if put $ in front, waits for web page to load
     
     
@@ -9,7 +11,7 @@ const socket = io();
     // handle when the create new game button is pressed
     $('#game-container').on('click', '#btn-new-game', function() {
         // create a new socket.io room and assign socket
-        var minP = $('#playerSelect').val()//    .selectedIndex(); 
+        let minP = $('#playerSelect').val()//    .selectedIndex(); 
         //console.log("minplayers "+minP)
         // minimum players for a this 
         socket.emit("newRoom", minP, (response) => {
@@ -18,8 +20,11 @@ const socket = io();
     });
 
     $('#game-container').on('click', '#btn-join-game', function() {
+        
         var roomID = $(this).data('button');
-        initGame(roomID,socket.id);
+        let numPlayers = cells[roomID].minPlayers
+        //console.log(" numplayers from cell "+ numPlayers)
+        initGame(roomID,numPlayers);
         
     });
 
@@ -45,6 +50,7 @@ const socket = io();
 
     socket.on('update', function(rooms) {
         var room, key;
+        cells = Object.assign({}, rooms);
         $('.room-list-item').remove();
         for (key in rooms) {
             if (rooms.hasOwnProperty(key)) {
@@ -63,9 +69,10 @@ const socket = io();
                 + '<td>' + room.clients.length + '/'+room.minPlayers+'</td>'
                 + '<td><button id=btn-join-game data-button=' + room.id + '>Join Game</button></td>'
             );
+            
     }
 
-    function initGame(gameKey, playerID) {
+    function initGame(gameKey, numPlayers) {
         $('#game-list-options').remove()
         $('#debug').remove()
         $('#game-container').append(
@@ -101,7 +108,8 @@ const socket = io();
             // add scene using key from scene modulle
             game.scene.add('DungeonScene', DungeonScene, false);
             //game.scene.start('DungeonScene',{seed: gameKey,gameRoom:gameKey})
-            
-            game.scene.start('DungeonScene',{seed:gameKey, playerID:socket.id, socket: socket })
+            let gameSize =100 + (numPlayers-1)*50;
+            //console.log(" gameSize in initGame"+ gameSize)
+            game.scene.start('DungeonScene',{seed:gameKey, playerID:socket.id, socket: socket, gameSize: gameSize })
     }
 })(socket);
