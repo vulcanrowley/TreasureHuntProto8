@@ -2,7 +2,7 @@ import LobbyScene from "../scenes/LobbyScene.js"
 import DungeonScene from "../scenes/DungeonScene.js"
 
 const socket = io();
-var minP =1;
+var cells = {};
 (function (socket) {// if put $ in front, waits for web page to load
     
     
@@ -10,7 +10,7 @@ var minP =1;
     // handle when the create new game button is pressed
     $('#game-container').on('click', '#btn-new-game', function() {
         // create a new socket.io room and assign socket
-        minP = $('#playerSelect').val()//    .selectedIndex(); 
+        let minP = $('#playerSelect').val()//    .selectedIndex(); 
         //console.log("minplayers "+minP)
         // minimum players for a this 
         socket.emit("newRoom", minP, (response) => {
@@ -20,7 +20,8 @@ var minP =1;
 
     $('#game-container').on('click', '#btn-join-game', function() {
         var roomID = $(this).data('button');
-        initGame(roomID,minP);
+        let numPlayers = cells[roomID].minPlayers
+        initGame(roomID,numPlayers);
         
     });
 
@@ -46,6 +47,7 @@ var minP =1;
 
     socket.on('update', function(rooms) {
         var room, key;
+        cells = Object.assign({}, rooms);
         $('.room-list-item').remove();
         for (key in rooms) {
             if (rooms.hasOwnProperty(key)) {
@@ -102,7 +104,7 @@ var minP =1;
             // add scene using key from scene modulle
             game.scene.add('DungeonScene', DungeonScene, false);
             //game.scene.start('DungeonScene',{seed: gameKey,gameRoom:gameKey})
-            
-            game.scene.start('DungeonScene',{seed:gameKey, playerID:socket.id, socket: socket ,numPlayers:numPlayers})
+            let gameSize =100 + (numPlayers-1)*50;// 200 generate ~300 rooms; 250 creates ~450; 150 creates ~150 ; 100 about 70 rooms
+            game.scene.start('DungeonScene',{seed:gameKey, playerID:socket.id, socket: socket ,gameSize:gameSize})
     }
 })(socket);

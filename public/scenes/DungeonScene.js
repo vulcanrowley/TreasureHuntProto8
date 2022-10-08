@@ -35,7 +35,7 @@ export default class DungeonScene extends Phaser.Scene {
       this.gameKey = data.seed; // game room is the same as the sceneSeed
       this.playerID = data.playerID;
       this.socket = data.socket;
-      this.numPlayers = data.numPlayers;
+      this.gameSize = data.gameSize;
 };
       
 
@@ -67,8 +67,8 @@ export default class DungeonScene extends Phaser.Scene {
       //  - Doors should be at least 2 tiles away from corners, so that we can place a corner tile on
       //    either side of the door location
       this.dungeon = new Dungeon({
-        width: 100 + (self.numPlayers-1)*50,// 200 generate ~300 rooms; 250 creates ~450; 150 creates ~150 ; 100 about 70 rooms
-        height:100 + (self.numPlayers-1)*50,
+        width: this.gameSize,
+        height:this.gameSize,
         doorPadding: 2,
         randomSeed: this.sceneSeed,//this.level,
         rooms: {
@@ -252,7 +252,7 @@ export default class DungeonScene extends Phaser.Scene {
         self.player.goal.x = gameX;
         self.player.goal.y = gameY;
 
-        console.log(`click at ${gameX}, ${gameY}`)
+        //console.log(`click at ${gameX}, ${gameY}`)
 
       }, this);
 
@@ -317,14 +317,8 @@ export default class DungeonScene extends Phaser.Scene {
       this.socket.on('playerMoved', function (playerInfo) {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (playerInfo.playerId === otherPlayer.playerId) {
-            console.log( " told "+otherPlayer.playerId+" moved to "+playerInfo.x);
-            // otherPlayer is just a sprite without animation at this point
-            // so setPosition works
-            otherPlayer.setPosition(playerInfo.x, playerInfo.y)
-            console.log(otherPlayer.x +" , "+playerInfo.x )
-           // otherPlayer.sprite.body.x = playerInfo.x
-           // otherPlayer.sprite.body.y = playerInfo.y
 
+            otherPlayer.setPosition(playerInfo.x, playerInfo.y)
           }
         })
       })
@@ -564,7 +558,7 @@ export default class DungeonScene extends Phaser.Scene {
 
   // this is the Phaser update per cycle, not the Room update function
   update() {
-    //console.log(`Game is Ready ${GameReady} `) 
+    
       if( GameReady){//this.player != null){// this.player.gameRoom == GameRoom &&
         
         if(this.player.health < 0){
@@ -591,7 +585,7 @@ export default class DungeonScene extends Phaser.Scene {
         this.player.Htext.setTintFill(0x00ff00)
         if(this.player.health < 30){this.player.Htext.setTintFill(0xff0000);}
         // tell server where we moved to
-        console.log(" player: "+this.player.id+"  "+x+" , "+y);
+        //console.log(" player: "+this.player.id+"  "+x+" , "+y);
         this.socket.emit('playerMovement', { x: this.player.sprite.x, y: this.player.sprite.y})
       }
   
