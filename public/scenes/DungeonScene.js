@@ -317,10 +317,14 @@ export default class DungeonScene extends Phaser.Scene {
       this.socket.on('playerMoved', function (playerInfo) {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (playerInfo.playerId === otherPlayer.playerId) {
-            //console.log( " told "+otherPlayer.playerId+" moved to "+playerInfo.x);
+            console.log( " told "+otherPlayer.playerId+" moved to "+playerInfo.x);
             // otherPlayer is just a sprite without animation at this point
             // so setPosition works
             otherPlayer.setPosition(playerInfo.x, playerInfo.y)
+            console.log(otherPlayer.x +" , "+playerInfo.x )
+           // otherPlayer.sprite.body.x = playerInfo.x
+           // otherPlayer.sprite.body.y = playerInfo.y
+
           }
         })
       })
@@ -576,7 +580,7 @@ export default class DungeonScene extends Phaser.Scene {
       // send update to server
       var x = this.player.sprite.x
       var y = this.player.sprite.y
-      //console.log(" player: "+this.player.id+"  "+x+" , "+y);
+      
       if (this.player.oldPosition && (x !== this.player.oldPosition.x || y !== this.player.oldPosition.y )) {
         // move player health value with player
         //console.log(" text"+this.player.text.x)
@@ -587,6 +591,7 @@ export default class DungeonScene extends Phaser.Scene {
         this.player.Htext.setTintFill(0x00ff00)
         if(this.player.health < 30){this.player.Htext.setTintFill(0xff0000);}
         // tell server where we moved to
+        console.log(" player: "+this.player.id+"  "+x+" , "+y);
         this.socket.emit('playerMovement', { x: this.player.sprite.x, y: this.player.sprite.y})
       }
   
