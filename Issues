@@ -2,7 +2,7 @@ es6 vs commonJs
 - tried change package.json and made socket.cjs to enable requires
 - tried changing to .mjs for main and DUngeonScene
 
-NOPE was wrong version of Phaser nedds to be 3.55.2
+NOPE was wrong version of Phaser needs to be 3.55.2
 
 PRE-BETA ISSUES
 -- correctly adding players and others- DONE
@@ -19,7 +19,7 @@ PRE-BETA ISSUES
 ==== assign starting positions  DONE
 -- speciy players per new game, simultaneos start and lockout late players DONE
 -- add collision animation Done
--- load up on server - ONGOING
+-- load up on server - running on www.RowleyCryptoGames.com
 
 POST BETA
 Note:   put up waiting .. sign 
@@ -27,6 +27,6 @@ Note:   put up waiting .. sign
 
 
 
-Web socket timout on Render free tier
+Web socket timout on Render free tier - Can't use free tier on RENDER.COM
 --after 5 minutes, the WS service timesout - use https://github.com/pladaria/reconnecting-websocket
 -- to fix or upgrade to paid tier

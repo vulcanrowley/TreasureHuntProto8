@@ -260,7 +260,7 @@ export default class DungeonScene extends Phaser.Scene {
     //!!!!!!!!!!!! SocketIO Setup
     // Drived From https://github.com/ivangfr/socketio-express-phaser3
 
-    // ask server for the player to join this room
+    // ask server for the player to join this room after the dungeon has been built
     this.socket.emit('join', this.gameKey, function(data) {
     
     });
@@ -271,7 +271,7 @@ export default class DungeonScene extends Phaser.Scene {
       let PlayerID =this.playerID
       var roomKey = this.gameKey
       
-      
+      // This function populates new player and any existing players in this client instance
       this.socket.on('currentPlayers', function (people) {
           //console.log(" in client currentPlayers")
           //console.log("total number of people "+Object.keys(people).length)
@@ -313,7 +313,7 @@ export default class DungeonScene extends Phaser.Scene {
       })
     
     
-    
+    // updates players other than this character
       this.socket.on('playerMoved', function (playerInfo) {
         self.otherPlayers.getChildren().forEach(function (otherPlayer) {
           if (playerInfo.playerId === otherPlayer.playerId) {
@@ -354,7 +354,7 @@ export default class DungeonScene extends Phaser.Scene {
         
       })
 
-      // server says someone died while carring the Treasure, so replace itat original spot
+      // server says someone died while carring the Treasure, so replace it at original spot
       this.socket.on('replaceTreasure', function (players) {
         Object.keys(players).forEach(function (id) {
           if (players[id].playerId === self.socket.id) {
@@ -388,7 +388,7 @@ export default class DungeonScene extends Phaser.Scene {
         })
       })
 
-      
+      // Holds game waiting for other players.
       this.socket.on('gameReady', function (rooms) {
         //console.log("In player gameReady")
         Object.keys(rooms).forEach(function (rm) {
@@ -577,8 +577,6 @@ export default class DungeonScene extends Phaser.Scene {
       
       if (this.player.oldPosition && (x !== this.player.oldPosition.x || y !== this.player.oldPosition.y )) {
         // move player health value with player
-        //console.log(" text"+this.player.text.x)
-        //this.player.text = this.player.health;
         this.player.Htext.text =this.player.health;
         this.player.Htext.x = x -10
         this.player.Htext.y = y -30
@@ -610,7 +608,7 @@ export default class DungeonScene extends Phaser.Scene {
 
 }//end of Dungeon class
 
-      // SocketIO setup
+      // Credits
       
       // based on https://gamedevacademy.org/create-a-basic-multiplayer-game-in-phaser-3-with-socket-io-part-2/
       //and https://github.com/ivangfr/socketio-express-phaser3

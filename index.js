@@ -33,6 +33,8 @@
 // include our custom server configuration
 var Server = require('./server/server.js');
 var Room = require('./server/room.js');
+const solanaWeb3 = require("@solana/web3.js");
+
 
 // Server Game code maintaining player's states and using socketIO to update clients
 /////////////////////////////////////////////////////////////////////////////////
