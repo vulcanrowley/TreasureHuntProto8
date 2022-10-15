@@ -108,7 +108,7 @@ server.on('connection', function (socket) {// was io.
   //}// end of player count IF
 
   socket.on('disconnect', function() {   
-    var room = findRoomByID(socket.id, rooms);
+    let room = findRoomByID(socket.id, rooms);
     
     if(room != null){
         //console.log(" player "+socket.id+" and room deletion candidate "+room.id)
@@ -300,16 +300,7 @@ server.on('connection', function (socket) {// was io.
         
       }
     }
-    /*  doesn't seem to work ??????????????
-    // push target slightly
-    if(players[fighters.attacker].x >players[fighters.target].x ){
-      players[fighters.target].x++
-    }else{players[fighters.target].x--}
-    if(players[fighters.attacker].y >players[fighters.target].y ){
-      players[fighters.target].y++
-    }else{players[fighters.target].y--}
-    socket.in(players[fighters.target].gameRoom).emit('playerMoved', players[fighters.target])
-    */
+
     
     //edge conditions
     //  - when both layer die in same combat collision
@@ -327,6 +318,10 @@ server.on('connection', function (socket) {// was io.
         // tell everybody else, game over
         let reasonCode ='lost'
         socket.to(players[socket.id].gameRoom).emit('gameOver',{reason:reasonCode})// means another player escaped with treasure
+        // delete this room from room list
+        //console.log(` room to delete ${findRoomByID(socket.id, rooms).id}`)
+        //rooms[findRoomByID(socket.id, rooms)].clients.length =0;
+      
       };
 
   })// end of exitHit

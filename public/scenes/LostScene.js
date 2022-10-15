@@ -13,7 +13,6 @@ export default class LostScene extends Phaser.Scene {
         // combat - combat death
         this.reasonCode = data.reason;
   
-        //game.stage.disableVisibilityChange = true;// maybe game.scene???
   };
         
   
@@ -54,8 +53,8 @@ export default class LostScene extends Phaser.Scene {
         cam.fade(250, 0, 0, 0);
         cam.fadeOut(15000,0xff0000)
         cam.once("camerafadeoutcomplete", () => {
-            console.log("leaving game as loser")
-            window.location.replace('http://localhost:3000/')
+            //console.log("leaving game as loser")
+            window.location.replace('www.RowleyCryptoGames.com')
             this.scene.remove();
             //this.sys.game.destroy(true);
         });

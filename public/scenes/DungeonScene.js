@@ -61,7 +61,7 @@ export default class DungeonScene extends Phaser.Scene {
 
     // MAX of 20 players per game
     this.opponentCnt = -1;
-    
+    //this.gameSize = 30; uncomment for small test game
       // Generate a random world based on sceneSeed with a few extra options:
       //  - Rooms should only have odd number dimensions so that they have a center tile.
       //  - Doors should be at least 2 tiles away from corners, so that we can place a corner tile on
@@ -87,7 +87,7 @@ export default class DungeonScene extends Phaser.Scene {
           width: this.dungeon.width,
           height: this.dungeon.height,
       });
-      console.log(`scene seed is ${this.sceneSeed}`)
+      //console.log(`scene seed is ${this.sceneSeed}`)
       console.log(' number of rooms - '+this.dungeon.rooms.length);
       const tileset = map.addTilesetImage("tiles", null, 48, 48, 1, 2); // 1px margin, 2px spacing
       this.groundLayer = map.createBlankLayer("Ground", tileset).fill(TILES.BLANK);
@@ -203,18 +203,6 @@ export default class DungeonScene extends Phaser.Scene {
         on: false
       });
 
-
-      /*
-          //this.hasPlayerReachedStairs = true;
-          //this.player.freeze();
-          //const cam = this.cameras.main;
-          //cam.fade(250, 0, 0, 0);
-          //cam.once("camerafadeoutcomplete", () => {
-              //this.player.destroy();
-              //this.scene.restart();
-          //});
-      });
-      */
 
       ////// END of DUNGEON GENERATION
 
@@ -344,6 +332,7 @@ export default class DungeonScene extends Phaser.Scene {
         })
       });  
 
+      
       this.socket.on('gameOver', function(info){
         
         // move to LOST scene with reasonCode in info
@@ -351,8 +340,9 @@ export default class DungeonScene extends Phaser.Scene {
         //this.scene.start('LostScene')//,{reason: reason})
         self.changeScene(info.reason)
         self.endPlayer();
-        
+        //self.scene
       })
+      
 
       // server says someone died while carring the Treasure, so replace it at original spot
       this.socket.on('replaceTreasure', function (players) {
@@ -498,8 +488,9 @@ export default class DungeonScene extends Phaser.Scene {
 
  endPlayer(){
   this.player.freeze();
-  this.player.destroy();
   this.socket.disconnect(true)
+  this.player.destroy();
+  
   this.scene.destroy();
 
  }
@@ -519,18 +510,14 @@ export default class DungeonScene extends Phaser.Scene {
       this.stuffLayer.removeTileAt(tile.x-1,tile.y,false,false,this.stuffLayer);
       this.stuffLayer.removeTileAt(tile.x+1,tile.y,false,false,this.stuffLayer);
     
-   
-
-      //this.changeWinScene()
-      this.scene.start('WinnerScene')
-      this.socket.disconnect(true)
-     // this.scene.destroy();
-      this.scene.remove(DungeonScene);
-      
-
       //tell everybody game over
       this.socket.emit('exitHit')
 
+     // this.changeWinScene()
+      this.scene.start('WinnerScene')
+      this.socket.disconnect(true)
+      this.scene.destroy();
+      //this.scene.remove(DungeonScene);
 
     }
   }
